@@ -1,0 +1,16 @@
+uuid = "f1b9e97e-8077-4104-86a7-836a04ad9eac"
+name = "Search Engine Lookup"
+authors = ["Bob Swift"]
+description = "Adds a right-click option on a cluster to look up album information using a search engine in a browser window."
+api = ['3.0']
+license = "GPL-2.0"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.txt"
+long_description = """
+This plugin adds a right-click option on a cluster, providing the ability to lookup the cluster using a search engine in a
+browser window. It also provides a right-click option on album and track items in the right-hand Album pane, allowing a
+search engine lookup for the cover art associated with the selected album or track.
+
+When you right-click on the cluster, album or track, the lookup option is found under the "Plugins" section of the context list.
+"""
+categories = ["other"]
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/search_engine_lookup/user_guide.html"
