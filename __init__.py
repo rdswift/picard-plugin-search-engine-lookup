@@ -261,6 +261,7 @@ class SearchEngineEditDialog(QtWidgets.QDialog):
 class SearchEngineLookupOptionsPage(OptionsPage):
 
     TITLE = t_('ui.options.title', "Search Engine Lookup")
+    HELP_URL = USER_GUIDE_URL
 
     def __init__(self, parent=None):
         super(SearchEngineLookupOptionsPage, self).__init__(parent)
