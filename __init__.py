@@ -22,7 +22,7 @@ import re
 from urllib.parse import quote_plus
 from uuid import uuid4
 
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard.plugin3.api import (
     BaseAction,
@@ -32,7 +32,6 @@ from picard.plugin3.api import (
     t_,
 )
 
-from .ui_options_search_engine_editor import Ui_SearchEngineEditorDialog
 from .ui_options_search_engine_lookup import Ui_SearchEngineLookupOptionsPage
 
 from picard.util.webbrowser2 import open as _open
@@ -161,29 +160,87 @@ class SearchEngineEditDialog(QtWidgets.QDialog):
         self.valid_no = QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogCancelButton).pixmap(16, 16)
         self.valid_yes = QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogApplyButton).pixmap(16, 16)
 
-        self.ui = Ui_SearchEngineEditorDialog()
-        self.ui.setupUi(self)
-        self.ui.le_title.setText(self.edit_provider)
-        self.ui.le_url.setText(self.edit_url)
-
+        self.setup_ui()
         self.setup_actions()
         self.check_validation()
 
+    def setup_ui(self):
+        self.setWindowTitle(self.api.tr("EditorDialog.window.title", "Edit Search Engine Provider"))
+        self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+
+        self.verticalLayout = QtWidgets.QVBoxLayout(self)
+
+        self.description = QtWidgets.QLabel()
+        self.description.setTextFormat(QtCore.Qt.TextFormat.MarkdownText)
+        self.description.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
+        self.description.setWordWrap(True)
+        self.verticalLayout.addWidget(self.description)
+
+        spacer = QtWidgets.QSpacerItem(20, 6, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
+        self.verticalLayout.addSpacerItem(spacer)
+
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.setContentsMargins(-1, -1, -1, 0)
+        self.label_title = QtWidgets.QLabel()
+        self.gridLayout.addWidget(self.label_title, 0, 0, 1, 1)
+        self.label_url = QtWidgets.QLabel()
+        self.gridLayout.addWidget(self.label_url, 1, 0, 1, 1)
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        self.le_title = QtWidgets.QLineEdit()
+        self.le_title.setMinimumWidth(400)
+        self.le_title.setFont(font)
+        self.gridLayout.addWidget(self.le_title, 0, 1, 1, 1)
+        self.le_url = QtWidgets.QLineEdit()
+        self.le_url.setMinimumWidth(400)
+        self.le_url.setFont(font)
+        self.gridLayout.addWidget(self.le_url, 1, 1, 1, 1)
+        self.img_valid_title = QtWidgets.QLabel()
+        self.img_valid_title.setMinimumSize(QtCore.QSize(16, 16))
+        self.img_valid_title.setText("")
+        self.gridLayout.addWidget(self.img_valid_title, 0, 2, 1, 1)
+        self.img_valid_url = QtWidgets.QLabel()
+        self.img_valid_url.setMinimumSize(QtCore.QSize(16, 16))
+        self.img_valid_url.setText("")
+        self.gridLayout.addWidget(self.img_valid_url, 1, 2, 1, 1)
+        self.verticalLayout.addLayout(self.gridLayout)
+
+        self.buttonBox = QtWidgets.QDialogButtonBox()
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Cancel | QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.verticalLayout.addWidget(self.buttonBox)
+
+        self.description.setText(self.api.tr(
+            "EditorDialog.label.description",
+            (
+                "Enter the title and URL for the search engine provider. Titles must be at least two non-space characters long, and "
+                "must not be the same as the title of an existing provider.\n\nWhen entering the URL the macro **%search%** must be "
+                "included. This will be replaced by the list of search words separated by plus signs when the url is sent to your "
+                "browser for display."
+            )
+        ))
+        self.label_title.setText(self.api.tr("EditorDialog.label.title", "Title:"))
+        self.label_url.setText(self.api.tr("EditorDialog.label.url", "URL:"))
+        self.le_title.setToolTip(self.api.tr("EditorDialog.tooltip.title", "The title to show in the list for the search engine provider"))
+        self.le_url.setToolTip(self.api.tr("EditorDialog.tooltip.url", "The URL to use for the search engine provider"))
+
+        self.le_title.setText(self.edit_provider)
+        self.le_url.setText(self.edit_url)
+
     def setup_actions(self):
-        self.ui.le_title.textChanged.connect(self.title_text_changed)
-        self.ui.le_url.textChanged.connect(self.url_text_changed)
-        self.ui.buttonBox.accepted.connect(self.accept)
-        self.ui.buttonBox.rejected.connect(self.reject)
+        self.le_title.textChanged.connect(self.title_text_changed)
+        self.le_url.textChanged.connect(self.url_text_changed)
+        self.buttonBox.accepted.connect(self.accept)
+        self.buttonBox.rejected.connect(self.reject)
 
     def check_validation(self):
         valid_title = re.match(RE_VALIDATE_TITLE, self.edit_provider) and self.edit_provider not in self.providers
-        self.ui.img_valid_title.setPixmap(self.valid_yes if valid_title else self.valid_no)
+        self.img_valid_title.setPixmap(self.valid_yes if valid_title else self.valid_no)
 
         valid_url = re.match(RE_VALIDATE_URL, self.edit_url)
-        self.ui.img_valid_url.setPixmap(self.valid_yes if valid_url else self.valid_no)
+        self.img_valid_url.setPixmap(self.valid_yes if valid_url else self.valid_no)
 
         # Note that this needs to be forced to a bool to avoid Qt crashing Picard
-        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.StandardButton.Ok).setEnabled(bool(valid_title and valid_url))
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.StandardButton.Ok).setEnabled(bool(valid_title and valid_url))
 
     def get_output(self):
         return self.output
