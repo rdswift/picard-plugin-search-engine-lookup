@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2020-2021, 2025 Bob Swift (rdswift)
+# Copyright (C) 2020-2021, 2025-2026 Bob Swift (rdswift)
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -307,7 +307,7 @@ class SearchEngineLookupOptionsPage(OptionsPage):
             list_item.setCheckState(QtCore.Qt.CheckState.Checked)
 
     def add_provider(self):
-        provider_id = uuid4()
+        provider_id = str(uuid4())
         self.edit_provider_dialog(provider_id)
 
     def edit_additional_words(self):
