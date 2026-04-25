@@ -14,3 +14,4 @@ When you right-click on the cluster, album or track, the lookup option is found 
 """
 categories = ["other"]
 homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/search_engine_lookup/user_guide.html"
+report_bugs_to = "https://github.com/rdswift/picard-plugin-search-engine-lookup/issues"
