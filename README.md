@@ -5,3 +5,7 @@ This plugin adds a right click option on a cluster, providing the ability to loo
 When you right-click on the cluster, album or track, the lookup option is found under the "Plugins" section of the context list.
 
 Please see the [User Guide](https://picard-plugins-user-guides.readthedocs.io/en/latest/search_engine_lookup/user_guide.html) for more information.
+
+## Contributing
+
+Please see the [Contribution Guidelines for MusicBrainz Picard Plugins](https://github.com/metabrainz/picard-plugins-registry/blob/main/PLUGIN_CONTRIBUTING.md) on how to help with development of this plugin.
