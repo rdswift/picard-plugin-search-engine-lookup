@@ -15,3 +15,15 @@ When you right-click on the cluster, album or track, the lookup option is found 
 categories = ["other"]
 homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/search_engine_lookup/user_guide.html"
 report_bugs_to = "https://github.com/rdswift/picard-plugin-search-engine-lookup/issues"
+
+[name_i18n]
+fr = "Recherche sur les moteurs de recherche"
+zh_CN = "搜索引擎查询"
+
+[description_i18n]
+fr = "Ajoute une option accessible par un clic droit sur un groupe permettant de rechercher des informations sur un album à l'aide d'un moteur de recherche dans une fenêtre de navigateur."
+zh_CN = "在聚类上添加右键选项，使用浏览器窗口中的搜索引擎查找专辑信息。"
+
+[long_description_i18n]
+fr = "Ce plugin ajoute une option accessible par un clic droit sur un groupe, permettant de rechercher ce groupe à l'aide d'un moteur de recherche dans une fenêtre de navigateur. Il propose également une option accessible par un clic droit sur les albums et les morceaux dans le volet « Album » situé à droite, permettant de rechercher sur un moteur de recherche la pochette associée à l'album ou au morceau sélectionné.\n\nLorsque vous cliquez avec le bouton droit sur le groupe, l'album ou le morceau, l'option de recherche se trouve dans la section « Plugins » de la liste contextuelle."
+zh_CN = "此插件在聚类上添加右键选项，提供使用浏览器窗口中的搜索引擎查找聚类的功能。它 还为右侧专辑窗格中的专辑和音轨项提供右键选项，允许查找与选定专辑或音轨相关的封面图。\n\n当你右键点击聚类、专辑或音轨时，查找选项在上下文列表的 \"插件\" 部分找到。"
